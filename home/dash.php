@@ -84,13 +84,17 @@
               $result = $dbcon->query($stmt) ;
 
                 if ($result->num_rows > 0) {
-                  $i = 0 ;
-                  echo '<table class="table-responsive">' ;
+                  $i = 1 ;
+                  echo '<table class="table table-responsive">' ;
                   echo '<tr>' ;
+                  echo '<td>S. NO.</td>' ;
+                  echo '<td>Product Id</td>' ;
+                  echo '<td>Product</td>' ;
+                  echo '<td>Total Score</td>' ;
                   echo '</tr>' ;
                   // output data of each row
                   while($row = $result->fetch_assoc()) {
-                    echo "<tr><td>" . $i++ . "</td><td>" . $row['product_name'] . "</td><td>" . $row['total_score'] . "</td></tr>";
+                    echo "<tr><td>" . $i++ . "</td><td>" . $row['product_id'] . "</td><td>" . $row['product_name'] . "</td><td>" . $row['total_score'] . "</td></tr>";
                   }
                 } else {
                   echo "No Results Found";
@@ -113,8 +117,14 @@
             $result = $dbcon->query($stmt) ;
 
               if ($result->num_rows > 0) {
-                echo '<table class="table-responsive">' ;
+                echo '<table class="table table-responsive">' ;
                 echo '<tr>' ;
+                echo '<td>Username</td>' ;
+                echo '<td>First Name</td>' ;
+                echo '<td>Last Name</td>' ;
+                echo '<td>Email</td>' ;
+                echo '<td>Phone</td>' ;
+                echo '<td>Contributions</td>' ;
                 echo '</tr>' ;
                 // output data of each row
                 while($row = $result->fetch_assoc()) {
@@ -141,18 +151,21 @@
             }
             // preparing the query.
             $user = $_SESSION['login_user'] ;
-
-            $stmt = "SELECT * FROM user_vote WHERE user_id = '$user' ORDER BY id DESC LIMIT 10" ;
+            $stmt = "SELECT * FROM user_vote WHERE username = '$user'" ;
             $result = $dbcon->query($stmt) ;
 
               if ($result->num_rows > 0) {
-                $j=0 ;
-                echo '<table class="table-responsive">' ;
+                $j=1 ;
+                echo '<table class="table table-responsive">' ;
                 echo '<tr>' ;
+                echo '<td>S.NO.</td>' ;
+                echo '<td>Product Id</td>' ;
+                echo '<td>Vote</td>' ;
                 echo '</tr>' ;
                 // output data of each row
                 while($row = $result->fetch_assoc()) {
-                  echo "<tr><td>" . $j++ . "</td><td>" . $row['date'] . "</td><td>" . $row['date'] . "</td><td>" . $row['vote'] . "</td></tr>";
+                  if($row['vote']){$vote = "Upvote" ;}else{$vote = "Downvote";}
+                  echo "<tr><td>" . $j++ . "</td><td>" . $row['product_id'] . "</td><td>" . $vote . "</td></tr>";
                 }
               } else {
                 echo "No Results Found";
@@ -163,7 +176,7 @@
 			</div>
 			<div class="col-md-6 bg-transparent">
 				<div class="inner-div">
-          <h4 class="text-center">Recent Activities</h4>
+          <h4 class="text-center">Recent Contributions</h4>
           <hr class="fw">
           <?php
             $dbcon = new mysqli(DB_SERVER,DB_USERNAME,DB_PASSWORD,DB_DATABASE);
@@ -171,16 +184,22 @@
               echo 'connection error.' ;
             }
             // preparing the query.
-            $stmt = "SELECT * FROM user_vote LIMIT 10" ;
+            $user = $_SESSION['login_user'] ;
+            $stmt = "SELECT * FROM user_vote WHERE username = '$user' ORDER BY id DESC LIMIT 10" ;
             $result = $dbcon->query($stmt) ;
 
               if ($result->num_rows > 0) {
-                echo '<table class="table-responsive">' ;
+                $k = 1 ;
+                echo '<table class="table table-responsive">' ;
                 echo '<tr>' ;
+                echo '<td>S.NO.</td>' ;
+                echo '<td>Product Id</td>' ;
+                echo '<td>Vote</td>' ;
                 echo '</tr>' ;
                 // output data of each row
                 while($row = $result->fetch_assoc()) {
-                  echo "<tr><td>" . $row[''] . "</td><td>" . $row[''] . "</td></tr>";
+                  if($row['vote']){$vote = "Upvote" ;}else{$vote = "Downvote";}
+                  echo "<tr><td>" . $k . "</td><td>" . $row['product_id'] . "</td><td>" . $vote . "</td></tr>";
                 }
               } else {
                 echo "No Results Found";
